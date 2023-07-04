@@ -1,0 +1,86 @@
+﻿@using eAchizitii.Data.ViewModels
+@model UtilizatorNouVM;
+
+@{
+
+    ViewData["Title"] = "Editare date utilizator";
+}
+
+<div class="row">
+    <div class="col-md-6 offset-3">
+        <p>
+            <h3 class="text-center">Editare date utilizator</h3>
+        </p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 offset-4">
+            <form asp-action="Editare">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <div class="form-group" style="padding:5px;">
+                    <label asp-for="Nume" class="control-label"></label>
+                    <input asp-for="Nume" class="form-control" />
+                    <span asp-validation-for="Nume" class="text-danger"></span>
+                </div>
+
+                 <div class="form-group" style="padding:5px;">
+                    <label asp-for="Rol" class="control-label"></label>
+                    <select asp-for="Rol" class="form-control" asp-items="@ViewBag.listaRoluri" 
+                        id="rolUtilizator" onchange="schimbaRol()" ></select>
+                    <span asp-validation-for="Rol" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" style="padding:5px;">
+                    <label asp-for="SucursalaId" class="control-label"></label>
+                    <select asp-for="SucursalaId" class="form-control" asp-items="@ViewBag.listaSucursale" id="sucursalaUtilizator"></select>
+                    <span asp-validation-for="SucursalaId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" style="padding:5px;">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-froup" style="padding:5px;"> 
+                    <label asp-for="Telefon" class="control-label"></label>
+                    <input asp-for="Telefon" class="form-control" />
+                    <span asp-validation-for="Telefon" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" style="padding:5px;">
+                    <input type="hidden" asp-for="Id" />
+                    <input class="btn btn-outline-success float-end text-center" 
+                        type="submit" value="Actualizare" />
+                    <a class="btn btn-outline-secondary" asp-action="ListaUtilizatori">Inapoi</a>
+                </div>
+            
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+  function schimbaRol(){
+
+      var elem = document.querySelector("#sucursalaUtilizator");
+      
+      if(elem.textContent != 'USER')
+      {
+      
+          elem.value= '1';
+      }
+      else
+      {
+
+          elem.valuew='0';
+
+
+      }
+
+  }
+
+</script>

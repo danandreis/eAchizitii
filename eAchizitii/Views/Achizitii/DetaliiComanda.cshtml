@@ -1,0 +1,155 @@
+﻿@using eAchizitii.Data
+@model Comanda
+
+@{
+
+    ViewData["Title"] = "Detalii comanda";
+
+}
+
+<div class="row text" >
+    <div class="col-md-border-4 offset-4">
+        <p class="text-center">
+            <h3> Detalii comanda</h3>
+        </p>
+    </div>
+
+    <p>
+        <h4> 1. Informatii generale comanda</h4>
+    </p>
+
+    <div class="col-md-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width:200px;">@Html.DisplayNameFor(c=>c.DataComanda)</th>
+                    <th style="width:200px;">@Html.DisplayNameFor(c=>c.sucursala!.Denumire)</th>
+                    <th style="width:200px;">Persoana contact</th>
+                    <th style="width:100px;">Telefon</th>
+                    <th style="width:400px;">@Html.DisplayNameFor(c=>c.AdresaLivrareId)</th>
+                    <th style="width:200px;">@Html.DisplayNameFor(c=>c.StatusComandaId)</th>
+                    <th style="width:300px;">Optiuni</th>
+                </tr>
+            </thead>
+
+            <tbody style="height:auto; overflow-y:hidden;">
+                <tr>
+
+                    <td class="align-middle" style="width:200px;">
+                        @Model.DataComanda.ToString("dd.MM.yyyy hh:mm tt")
+                    </td>
+                    <td class = "align-middle" style="width:200px;">
+                        @Html.DisplayFor(c=>Model.sucursala!.Denumire)
+                    </td>
+
+                    @{
+                        foreach (var item in Model.angajati_comenzi!)
+                        {
+
+                            if (item.rolComanda!.Rol!.Equals(ApplicationConstantValues.Persoana_contact))
+                            {
+
+                               <td class="align-middle" style="width:200px;">@item.angajat!.Nume</td>
+                               <td class="align-middle" style="width:100px;">@item.angajat.PhoneNumber</td>
+
+                            }
+                        }
+                    }
+                        
+                    <td class="align-middle" style="width:400px;">
+                        @Html.DisplayFor(c=>Model.adresaLivrare!.Adresa)
+                    </td>
+                    
+                    <td class="align-middle" style="width:200px;">
+                        @Html.DisplayFor(c=>Model.statusComanda.Status)
+                    </td>
+
+                    <td style="width:300px;">
+
+                        @if(!Model.statusComanda.Status.Equals(ApplicationConstantValues.Preluata))
+                        {
+                    
+                            <a class="btn btn-outline-success" asp-action="PreluareComanda" asp-route-id ="@Model.Id">
+                                 <i class="bi bi-basket-fill"></i>
+                                    Preluare
+                           </a>
+
+                        }
+                        else
+                        {
+
+                            <a class="btn btn-outline-success" asp-controller="InfoComanda" asp-action="Index" asp-route-idComanda ="@Model.Id">
+                                <i class="bi bi-pencil-square"></i>
+                                    Informatii comanda
+                            </a>
+                            @*<span style="color:green;font-weight:bold;">Preluata</span>*@
+                        
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p>
+        <h4> 2. Emitent comanda</h4>
+
+        @{
+            foreach (var item in Model.angajati_comenzi!)
+            {
+
+                if (item.rolComanda!.Rol == ApplicationConstantValues.Emitent)
+                {
+                    
+                    <p style="margin-left:50px;">
+                        Nume : <b>@item.angajat!.Nume</b>
+                        <br>
+                        Telefon : <b>@item.angajat!.PhoneNumber</b>
+                    </p>
+
+                }
+            }
+        }
+    </p>
+       
+    <p>
+        <h4> 3. Observatii comanda</h4>
+        <textarea asp-for="@Model.Observatii" disabled style="width:75%; margin-left:50px;height:fit-content; resize:none;"> @Html.DisplayFor(c=>Model.Observatii)</textarea>
+    </p>
+
+    <p>
+        <h4> 4.Detalii produse: </h4>
+    </p>
+
+    <div class="col-md-6 offset-3">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width:75px;">Id</th>
+                    <th style="width:500px;">Denumire</th>
+                    <th style="width:200px;">Cantitate</th>
+                    <th style="width:100px;">Um</th>
+                </tr>
+            </thead>
+                                    
+            <tbody style="height:150px;">
+                @{
+                    int indx = 1;
+
+                    for (int i=0;i<Model.produse_comenzi!.Count;i++)
+                    {
+                                
+                        <tr>
+                            <td class="align-middle" style="width:75px;">@indx</td>
+                            <td class="align-middle" style="width:500px;">@Html.DisplayFor(p=>Model.produse_comenzi[i].produs.Denumire)</td>
+                            <td class="align-middle" style="width:200px;">@Html.DisplayFor(p=>Model.produse_comenzi[i].Cantitate) </td>
+                            <td class="align-middle" style="width:100px;">@Html.DisplayFor(p=>Model.produse_comenzi[i].produs.Um) </td>
+                        </tr>
+
+                        indx++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

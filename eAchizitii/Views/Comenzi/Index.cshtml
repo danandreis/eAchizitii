@@ -1,0 +1,169 @@
+﻿@using eAchizitii.Data
+@model IEnumerable<Comanda>
+
+@{
+
+    ViewData["Title"] = "Lista comenzi";
+
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2 text-center">
+        <p>
+            @if (User.IsInRole("Admin"))
+            {
+                
+                <h3>Lista comenzi din baza de date</h3>
+
+            }
+            else
+            {
+                if (Model.Count() != 0)
+                {
+
+                    <h3>Lista comenzi Sucursala @Model.Select(c=>c.sucursala!.Denumire).ToList()[0]</h3>
+                }
+                else
+                {
+
+                    <h3>Lista comenzi</h3>
+
+                }
+            }
+        </p>
+    </div>
+    <div class="col-md-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width:35px;">@Html.DisplayNameFor(c=>c.Id)</th>
+                    <th style="width:200px;">@Html.DisplayNameFor(c=>c.DataComanda)</th>
+                    <th style="width:300px;">Persoana de contact</th>
+                    <th style="width:350px;">@Html.DisplayNameFor(c=>c.AdresaLivrareId)</th>
+                    <th style="width:100px;">@Html.DisplayNameFor(c=>c.statusComanda.Status)</th>
+                    <th style="width:300px;">Responsabil Achizitii</th>
+                    <th style="width:350px;text-align:center;">Optiuni</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @{
+
+                    if (Model.Count() != 0)
+                    {
+                        int indx = 1;
+
+                        foreach (var comanda in Model)
+                        {
+
+                            <tr>
+
+                                <td class="align-middle" style="width:35px;">@indx</td>
+
+                                <td class="align-middle" style="width:200px;">
+                                    @comanda.DataComanda.ToString("dd.MM.yyyy hh:mm tt")
+                                </td>
+
+                                <td class="align-middle" style="width:300px;">
+
+                                    @{
+                                        foreach (var item in comanda.angajati_comenzi!)
+                                        {
+
+                                            if (item.rolComanda!.Rol!.Equals(ApplicationConstantValues.Persoana_contact))
+                                            {
+
+                                                @Html.DisplayFor(c=>item.angajat!.Nume)
+
+                                            }
+                                        }
+                                    }
+                                    
+                                </td>
+
+                                <td class="align-middle" style="width:350px;">
+                                    @Html.DisplayFor(c=>comanda.adresaLivrare!.Adresa)
+                                </td>
+
+                                <td class="align-middle" style="width:100px;">
+                                    @Html.DisplayFor(c=>comanda.statusComanda.Status)
+                                </td>
+
+                                @{
+
+                                    bool existaRespAchizitii = false;
+
+                                    foreach (var item in comanda.angajati_comenzi!)
+                                    {
+
+                                        if (item.rolComanda!.Rol!.Equals(ApplicationConstantValues.Responstabil_achizitii))
+                                        {
+
+                                            existaRespAchizitii = true;
+                                            <td class="align-middle" style="width:300px;">@Html.DisplayFor(c=>item.angajat!.Nume)</td>
+
+                                        }
+                                    }
+
+                                    if (!existaRespAchizitii)
+                                    {
+                                        
+                                        <td class="align-middle" style="width:300px;"> - </td>
+
+                                    }
+                                }
+                                                                   
+                                <td class="align-middle" style="width:350px;">
+
+                                    <a class="btn btn-outline-info" asp-action="Detalii" asp-route-id="@comanda.Id">
+                                        <i class="bi bi-eye"></i>
+                                        Detalii
+                                    </a>    
+
+                                    @if (User.IsInRole("Director Sucursala"))
+                                    {
+                                        @if (comanda.Activ == 1)
+                                        {
+
+                                            <a class="btn btn-outline-success" asp-action="Editare" asp-route-id="@comanda.Id">
+                                                <i class="bi bi-pencil-square"></i>
+                                                    Editare
+                                            </a>
+
+                                            <a class="btn btn-outline-danger" asp-action="SchimbaStareComanda" asp-route-id="@comanda.Id"
+                                                asp-route-status = "Inactivare">
+                                                <i class="bi bi-trash"></i>
+                                                    Anulare
+                                            </a>
+                                        }
+                                        else
+                                        {
+
+                                            <a class="btn btn-outline-primary" asp-action="SchimbaStareComanda" asp-route-id="@comanda.Id"
+                                                asp-route-status = "Activare">
+                                                <i class="bi bi-bag"></i>
+                                                    Activare
+                                            </a>
+
+                                        }
+                                    }
+                                </td>
+                            </tr>
+
+                            indx++;
+                        
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+@if(User.IsInRole("Director Sucursala"))
+{
+ 
+    @await Html.PartialAsync("_ItemNou","Comenzi");
+
+}

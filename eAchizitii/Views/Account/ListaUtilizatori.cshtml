@@ -1,0 +1,129 @@
+﻿@using eAchizitii.Data.ViewModels
+@model IEnumerable<UtilizatorVM>
+
+@{
+
+    ViewData["Title"] = "Lista utilizatori";
+
+}
+
+<div class="row">
+   <div class="col-md-12 text-center">
+        <p>
+            <h3>Lista utilizatori</h3>
+        </p>
+    </div>
+    <div class="col-md-12" style="padding:15px;">
+        
+        <label>Selectie rol: </label>
+        <select id="selectRol" asp-items="@ViewBag.Roluri" id= "listaRoluri" onchange="SelectareRol(value)"></select>
+        
+        <a class="btn btn-outline-primary float-end" style="margin-right:35px;margin-left:5px;" asp-action="AdaugaRol">
+            <i class="bi bi-person-add"></i>
+                Adauga roluri
+        </a>
+        
+        <a class="btn btn-success text-white float-end" asp-action="Create">
+            <i class="bi bi-plus-circle"></i>
+                Adauga utilizator
+        </a>
+
+    </div>
+    <div class="col-md-12">   
+        <table class="table" style="margin-top:15px;">
+            <thead>
+                <tr>
+                    <th style="width:50px;" >@Html.DisplayNameFor(u=>u.Id)</th>
+                    <th style="width:200px;">@Html.DisplayNameFor(u=>u.Nume)</th>
+                    <th style="width:200px;">@Html.DisplayNameFor(u=>u.UserName) </th>
+                    <th style="width:250px;">@Html.DisplayNameFor(u=>u.Email)</th>
+                    <th style="width:200px;">@Html.DisplayNameFor(u=>u.Sucursala)</th>
+                    <th style="width:650px;text-align:center;">Optiuni</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                
+                @if (Model.Count() > 0)
+                {
+
+                    int indx = 1;
+
+                    @foreach (var utilizator in Model)
+                    {
+                        <tr>
+                            <td class="align-middle" style="width:50px;"> @indx</td>
+                            <td class="align-middle" style="width:200px;">@Html.DisplayFor(u=>utilizator.Nume)</td>
+                            <td class="align-middle" style="width:200px;">@Html.DisplayFor(u=>utilizator.UserName)</td>
+                            <td class="align-middle" style="width:250px;">@Html.DisplayFor(u=>utilizator.Email)</td>
+                            <td class="align-middle" style="width:200px;">@Html.DisplayFor(u=>utilizator.Sucursala)</td>
+                            <td style="width:650px;">
+                                
+                                <a class="btn btn-outline-primary" asp-action="Editare" asp-route-id =@utilizator.Id>
+                                    <i class="bi bi-pencil-square"></i>
+                                        Editare date cont
+                                </a>
+                                <a class="btn btn-outline-success" asp-action="ResetareParolaUser" asp-route-name =@utilizator.UserName>
+                                    <i class="bi bi-key"></i>
+                                        Resetare parola
+                                </a>
+
+                                @if(utilizator.Activ == 1)
+                                {
+
+                                    <a class="btn btn-outline-danger" asp-action="DezactivareCont" asp-route-name=@utilizator.UserName>
+                                        <i class="bi bi-trash"></i>
+                                            Dezactivare cont
+                                    </a>
+
+                                }
+                                else
+                                {
+
+                                    <a class="btn btn-outline-info" asp-action="ActivareCont" asp-route-name=@utilizator.UserName>
+                                        <i class="bi bi-person"></i>
+                                            Activare cont
+                                    </a>
+
+                                }
+                               
+                            </td>
+                        </tr>
+
+                      indx++;
+
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+
+    function SelectareRol(valoare){
+
+        let url = new URL(window.location.href);
+
+        if(valoare == "Toate")
+        {
+
+            url.searchParams.delete('rol');
+
+        }
+        else
+        {
+
+            url.searchParams.set('rol',valoare);
+
+        }
+
+        window.location.href = url;
+
+        var elem = document.querySelector("#listaRoluri");
+
+        elem.value= valoare;
+        
+    }
+
+</script>

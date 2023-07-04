@@ -1,0 +1,42 @@
+﻿@using eAchizitii.Data.ViewModels
+@model LoginUserVM;
+
+@{
+
+    ViewData["Title"] = "Autentificare";
+}
+
+<div class="row">
+    <div class="col-md-6 offset-3">
+        <p>
+            <h3 class="text-center">Autentificare utilizator</h3>
+        </p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 offset-4">
+            <form asp-action="Login">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <div class="form-group" style="padding:5px;">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" style="padding:5px;">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" style="padding:5px;">
+                    <input class="btn btn-outline-success float-end text-center" 
+                        type="submit" value="Autentificare" />
+                </div>
+            
+            </form>
+        </div>
+
+    </div>
+</div>

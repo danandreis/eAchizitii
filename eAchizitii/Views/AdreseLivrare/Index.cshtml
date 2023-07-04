@@ -1,0 +1,69 @@
+﻿@model IEnumerable<AdresaLivrare>
+
+@{
+
+    ViewData["Title"] = "Lista adrese de livrare";
+
+}
+
+<div class="row">
+   
+    <div class="col-md-8 offset-2">
+        <p>
+            <h3 class="text-center">Lista adrese de livrare</h3>
+        </p>
+    </div>
+
+    <div class="col-md-8 offset-2">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width:50px;">@Html.DisplayNameFor(a=>a.Id)</th>
+                    <th style="width:450px;text-align:center;">@Html.DisplayNameFor(a=>a.Adresa)</></th>
+                    <th style="width:150px;">Sucursala</th>
+                    <th  style="width:300px; text-align:center;">Optiuni</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            @{
+
+                if (Model.Count() > 0)
+                {
+                    int indx = 1;
+
+                    foreach (var adresa in Model)
+                    {
+                    
+                        <tr>
+                            <td class="align-middle" style="width:50px;">@indx</td>
+                            <td class="align-middle" style="width:450px;">@Html.DisplayFor(a=>adresa.Adresa)</td>
+                            <td class="align-middle" style="width:150px;">@Html.DisplayFor(a=>adresa.sucursala!.Denumire)</td>
+                            <td class="align-middle" style="width:300px;">
+                                <a class="btn btn-outline-success" asp-action="Editare" asp-route-id="@adresa.Id">
+                                    <i class="bi bi-pencil-square"></i>
+                                    Editare
+                                </a>
+                                <a class="btn btn-outline-danger" asp-action="Stergere" asp-route-id="@adresa.Id">
+                                    <i class="bi bi-trash"></i>
+                                    Stergere
+                                </a>
+                            </td>
+                        </tr>
+
+                        indx++;
+                    }
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (User.IsInRole("Director Sucursala"))
+{
+
+    @await Html.PartialAsync("_ItemNou","AdreseLivrare")
+    ;
+
+}

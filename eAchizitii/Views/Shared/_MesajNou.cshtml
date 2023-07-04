@@ -1,0 +1,50 @@
+﻿@model MesajComanda
+
+<div class="col-md-6 offset-3">
+    <p>
+        <h4>
+
+            Comunicari pentru comanda Nr. <b>@Model.ComandaId</b> 
+
+        </h4>
+    </p>
+</div>
+<div class="col-md-6 offset-3">
+
+    <form asp-action="TrimiteMesaj">
+        <div asp-validation-summary="ModelOnly"></div>
+
+        <input type="hidden" asp-for="ComandaId" />
+        <input type="hidden" asp-for="Data" />
+        <input type="hidden" asp-for="Id"/>
+
+        <div class="form-group" style="padding:5px;"> 
+            <label asp-for="Mesaj" class="control-label"></label>
+            <textarea asp-for="Mesaj" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Mesaj" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <a class="btn btn-outline-secondary" asp-controller="Mesaje" asp-action="Inapoi"> Inapoi </a>
+
+            @if(Model.Id > 0){
+
+
+                <input type="submit" class="btn btn-outline-success float-end" value="Actualizeaza comentariu"
+                    asp-controller="Mesaje" asp-action="ActualizeazaMesaj"/>
+
+            }
+            else
+            {
+
+                
+                <input type="submit" class="btn btn-outline-success float-end" value="Adauga comentariu"
+                    asp-controller="Mesaje" asp-action="TrimiteMesaj"/>
+
+            }
+            
+        </div>
+
+    </form>
+
+</div>

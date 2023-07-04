@@ -1,0 +1,39 @@
+﻿@using eAchizitii.Data.ViewModels
+@model AdresaLivrareVM
+
+@{
+
+    ViewData["Title"] = "Editare adresa livrare";
+
+}
+
+<div class="row text">
+    <div class="col-md-6 offset-3">
+        <p>
+            <h4>Editare adresa de livrare</h4>
+        </p>
+    </div>
+
+    <div class="col-md-6 offset-3"> 
+        <form asp-action="Editare">
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <div class="form-group">
+                <label>Sucursala <b>@ViewBag.Sucursala</b></label>
+            </div>
+
+            <div class="form-group" style="padding:5px;">
+                <label asp-for="Adresa" class="control-label"></label>
+                <input asp-for="Adresa" class="form-control"/>
+                <span asp-validation-for="Adresa" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="padding:5px;">
+                <input type="submit"  value = "Actualizare" class="btn btn-outline-success float-end" />
+                <a class="btn btn-outline-secondary" asp-action="Index">
+                    Inapoi
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

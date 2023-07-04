@@ -1,0 +1,43 @@
+﻿@using eAchizitii.Data.ViewModels
+@model MesajComandaVM
+
+@{
+
+    ViewData["Title"] = "Mesaje comanda";
+
+}
+
+
+<div class="row">
+   
+    @await Html.PartialAsync("_MesajNou", Model.mesajComanda)
+
+    <p></p>
+    
+    <div class="col-md-6 offset-3" style="padding:15px;">
+
+        @foreach (var mesaj in Model.listaMesaje)
+        {
+        
+            <p> 
+                De la <b>@mesaj.utilizator!.Nume</b> 
+                la data de : <b>@mesaj.Data.ToString("dd.MM.yyyy hh:mm:ss tt")</b> 
+
+                @if (Model.listaMesaje.IndexOf(mesaj) == 0 && mesaj.utilizator.UserName == User.Identity!.Name)
+                {
+                    
+                    <a class="btn btn-outline-success float-end" style="width:35px; padding:0px;" asp-action="Editare" asp-route-id=@mesaj.Id>
+                        <i class="bi bi-pencil-square" style="height:25px;width:35px;"></i>
+                    </a>
+
+                }                
+            </p>
+
+            <textarea asp-for="@mesaj.Mesaj" style="width:100%; margin-left:5px;height:75px; resize:none;border:none;background-color:whitesmoke;" 
+                readonly></textarea>
+                 
+            <hr />
+        }
+
+    </div>
+</div>

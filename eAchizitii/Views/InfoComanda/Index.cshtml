@@ -1,0 +1,190 @@
+﻿@using eAchizitii.Data.ViewModels
+@using eAchizitii.Data
+@model InfoComandaVM
+
+@{
+
+    ViewData["Title"] = "Informatii comanda";
+
+}
+
+<div class="row">
+   
+    <p>
+        <h4> Informatii comanda</h4>
+    </p>
+
+    <div class="col-md-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width:200px;">@Html.DisplayNameFor(info=>info.infoComandaCurentaVM.comanda!.DataComanda)</th>
+                    <th style="width:200px;">Persoana contact</th>
+                    <th style="width:100px;">Telefon</th>
+                    <th style="width:400px;">@Html.DisplayNameFor(info=>info.infoComandaCurentaVM.comanda!.AdresaLivrareId)</th>
+                    <th style="width:200px;">@Html.DisplayNameFor(info=>info.infoComandaCurentaVM.comanda!.SucursalaId)</th>
+                </tr>
+            </thead>
+
+            <tbody style="height:auto; overflow-y:hidden;">
+                <tr>
+
+                    <td class="align-middle" style="width:200px;">
+                        @Model.infoComandaCurentaVM.comanda!.DataComanda.ToString("dd.MM.yyyy hh:mm tt")
+                    </td>
+
+                    @{
+                        foreach (var item in Model.infoComandaCurentaVM.comanda!.angajati_comenzi!)
+                        {
+
+                            if (item.rolComanda!.Rol == ApplicationConstantValues.Persoana_contact)
+                            {
+
+                                <td class="align-middle" style="width:200px;">@item.angajat!.Nume</td>
+                                <td class="align-middle" style="width:100px;">@item.angajat.PhoneNumber</td>
+
+                            }
+                        }
+                    }
+                        
+                    <td class="align-middle" style="width:400px;">
+                        @Html.DisplayFor(c=>Model.infoComandaCurentaVM.comanda!.adresaLivrare!.Adresa)
+                    </td>
+                    
+                    <td class="align-middle" style="width:200px;">
+                        @Html.DisplayFor(c=>Model.infoComandaCurentaVM.comanda!.sucursala!.Denumire)
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <div class="row">
+             <div class="col-md-5" style="margin-left:50px;">
+                 <div class="row">
+                     <div class="col-12">
+
+                        @await Html.PartialAsync("_InformatieNoua", Model.infoComandaCurentaVM)
+
+                     </div>
+                     <div class="col-12">
+
+                        @foreach (var info in Model.listaInfoComenzi)
+                        {
+
+                            <div class="card mb-12 border-secondary mb-3">
+                                <div class="row g-0"> 
+
+                                    <div class="col-md-12">
+                                        <div class="card-header">
+
+                                            <p class="card-text">
+
+                                                De la <b>@info.utilizator!.Nume</b> 
+                                                la data de : <b>@info.Data.ToString("dd.MM.yyyy hh:mm:ss tt")</b> 
+
+                                                @if (User.IsInRole("Achizitii"))
+                                                {
+
+                                                    <a class="btn btn-outline-success float-end" style="width:35px; padding:0px;" 
+                                                        asp-action="Editare" asp-route-id=@info.Id>
+                                                        <i class="bi bi-pencil-square" style="height:25px;width:35px;"></i>
+                                                    </a>
+                                                }
+
+                                            </p>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                
+                                        <div class="card-body">
+
+                                            <textarea asp-for="@info.Descriere" style="width:100%; margin-left:5px;height:75px; resize:none;border:none;" 
+                                                readonly></textarea>
+
+                                        </div>
+                                    </div>
+
+                                    @if (info.fisiere.Count > 0)
+                                    {
+                                        <div class="col-md-12" style="background-color:antiquewhite">
+                                            <div class="card-footer">
+                                                <p class="card-text float-end align-middle">
+
+                                                    @foreach (var fisier in info.fisiere)
+                                                    {
+
+                                                        @Html.DisplayFor(f=>fisier.numeFisierBazaDate)
+
+                                                         <a id="openFile" style="height:35px;width:35px;padding:0px;" data-toggle="modal" 
+                                                            data-target="#exampleModal" href="#"
+                                                            onclick="deschideFisier('./Fisiere/@fisier.numeFisierDisc', '@fisier.numeFisierBazaDate')">
+                                                                <i class="bi bi-file-pdf" style="height:35px;width:35px;"></i>
+                                                        </a>
+
+                                                    }
+
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" 
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-xl" role="document">
+                                                <div class="modal-content" style="height:700px;">
+
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                  
+                                                    <div class="modal-body" style="height:100%;">
+                                                        <embed id="fisier" src="" class="w-100 h-100"/>
+                                                    </div>
+                                                  
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                                    </div>
+                                                
+                                                </div>
+                                              </div>
+                                            </div>
+                                    }
+
+                                </div>
+                            </div>
+
+                        }
+
+                     </div>
+
+                 </div>
+
+             </div>
+
+            <div class="col-md-6" style="margin-left:50px;">
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+  
+    function deschideFisier(file,numeFisier){
+
+        alert(file);
+        document.getElementById("fisier").src = file;
+        document.getElementById("exampleModalLabel").innerHTML = numeFisier;
+
+    }
+
+</script>

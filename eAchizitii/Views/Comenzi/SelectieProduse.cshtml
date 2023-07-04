@@ -1,0 +1,87 @@
+﻿@using eAchizitii.Data.ViewModels
+@model ListaProduseVM
+
+@{
+
+    ViewData["Title"] = "Inregistrare comanda noua";
+
+}
+
+<div class="row text" >
+    <div class="col-md-6 offset-3">
+        <p class="text-center">
+            <h3> Selectati produsele :</h3>
+        </p>
+    </div>
+
+    <div class="col-md-6 offset-3">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly"></div>
+
+             <div class="form-group" style="padding:5px;"> 
+                <a class="btn btn-outline-success float-end" asp-action="Continuare">
+                    Continuare
+                </a>
+                <a class="btn btn-outline-secondary float-end" style="padding-right:7px;" asp-action="Inapoi">
+                    Inapoi
+                </a>
+            
+            </div>
+
+            @{
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="width:50px;">Id</th>
+                            <th style="width:350px;">Denumire</th>
+                            <th style="50px;">Um</th>
+                            <th style="width:300px;">Optiuni</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    @{
+                            
+                        int indx = 1;
+
+                        @foreach (var produs in Model.listaProduseDB!)
+                        {
+                            <tr>
+                                <td class="align-middle" style="width:50px;">@indx</td>
+                                <td class="align-self-md-center" style="width:350px;">@Html.DisplayFor(p=>produs.Denumire)</td>
+                                <td class="align-middle" style="width:50px;">@Html.DisplayFor(p=>produs.Um) </td>
+                                <td class="align-middle" style="width:300px;">
+                                                            
+                                    @if(produs.Selectat == false)
+                                    {
+                                        <a class="btn btn-outline-success" asp-action="ModificareSelectieProdus" 
+                                            asp-route-id= "@produs.Id">
+                                            <i class="bi bi-pencil-square"></i>
+                                                Adauga in lista
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-outline-danger" asp-action="ModificareSelectieProdus"
+                                            asp-route-id="@produs.Id">
+                                            <i class="bi bi-trash"></i>
+                                                Sterge din lista
+                                        </a> 
+
+                                    }
+
+                                </td>
+                            </tr>
+                                
+                            indx++;
+                        }
+
+                    }
+
+                    </tbody>
+                </table>
+            }
+        </form>
+    </div>
+</div>

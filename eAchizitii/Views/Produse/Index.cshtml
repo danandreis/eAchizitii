@@ -1,0 +1,65 @@
+﻿@*Define model*@
+@model IEnumerable<Produs>
+
+@*Define View Data*@
+@{
+
+    ViewData["Title"] = "Lista de produse";
+
+}
+
+@*HTML code*@
+
+<p>
+    <h3 class="text-center">Lista produse</h3>
+</p>
+
+<div class="row">
+    <div class="col-md-6 offset-3">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width:50px;">@Html.DisplayNameFor(m=>m.Id)</th>
+                    <th class="text-center" style="width:300px;">@Html.DisplayNameFor(m=>m.Denumire)</th>
+                    <th style="width:75px;">@Html.DisplayNameFor(m=>m.Um)</th>
+                    <th class="text-center"  style="width:300px;">Optiuni</th>
+                
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int indx = 1;
+                    foreach (var produs in Model)
+                    {
+                                <tr>
+                                    <td class="align-middle"  style="width:50px;">
+                                        @indx
+                                    </td>
+                                    <td class="align-self-md-center"  style="width:300px;">
+                                        @Html.DisplayFor(p=>produs.Denumire)
+                                    </td>
+                                    <td class="align-middle"  style="width:75px;">
+                                        @Html.DisplayFor(p=>produs.Um)
+                                    </td>
+                                    <td class="align-middle"  style="width:300px;">
+                                        <a class="btn btn-outline-primary" asp-action="Editare" 
+                                        asp-route-id="@produs.Id">
+                                            <i class="bi bi-pencil-square"></i>
+                                            Editare
+                                        </a> 
+                                        <a class="btn btn-outline-danger" asp-action="Sterge"
+                                            asp-route-id="@produs.Id">
+                                            <i class="bi bi-trash"></i>
+                                            Stergere
+                                        </a> 
+                                    </td>
+                                </tr>
+                        indx++;
+                    }
+                }                
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@await Html.PartialAsync("_ItemNou","Produse");

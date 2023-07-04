@@ -1,0 +1,39 @@
+Produse:
+  - Id
+  - Denumire
+  - Um
+
+Sucursale:
+  -Id
+  -Locatie
+
+Persoane_contact:
+  - Id
+  - Nume
+  - Telefon
+
+Adrese_livrare:
+  - Id
+  - Adresa
+  - IdSucursala
+
+Resposabili_achizitii:
+  - Id
+  - Nume
+  - Telefon
+
+Comenzi:
+  - Id
+  - Data_lansare_comenzii
+  - Lista <IdProdus>
+  - Cantitate_produs 
+  - IdAdresa_Livrare
+  - IdResponsabil
+  - Status
+  - Observatii
+
+Preoduse_comenzi:
+   - Id
+   - IdProdus  
+   - IdComanda
+   

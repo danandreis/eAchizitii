@@ -1,0 +1,78 @@
+﻿@using eAchizitii.Data.ViewModels
+@model InfoComandaCurentaVM
+
+@*<div class="row">
+
+    <div class="col-md-5" style="margin-left:50px;">*@
+
+<form enctype="multipart/form-data" method="post">
+    <div asp-validation-summary="ModelOnly"></div>
+
+        <input type="hidden" asp-for="ComandaId" />
+        <input type="hidden" asp-for="Data" />
+        <input type="hidden" asp-for="Id"/>
+
+        <div class="form-group" style="padding:5px;"> 
+            <label asp-for="Descriere" class="control-label"></label>
+            <textarea asp-for="Descriere" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="Descriere" class="text-danger"></span>
+        </div>
+
+        @if (Model.listaFisiereDB != null)
+        {
+            
+            <div class="form-group" style="padding:5px;">
+
+                @foreach (KeyValuePair<string,string> keyValuePair in Model.listaFisiereDB)
+                {
+                    
+                    @if(keyValuePair.Value != null)
+                    {
+
+                        @Html.DisplayFor(f=>keyValuePair.Value)
+                         
+                        <a class="btn btn-outline-danger" style="width:35px; padding:0px;" asp-action="StergeFisierComanda" 
+                            asp-route-numeOriginalFisier=@keyValuePair.Value>
+                            <i class="bi bi-trash" style="height:25px;width:35px;"></i>
+                        </a>
+
+                    }
+                        
+                }
+
+            </div>
+        }
+
+        <div class="form-group">
+
+            <input type="file" class="form-control float-end" style= "padding:5px;" multiple
+                asp-for="listaFisiereUpload"/>
+        </div>
+
+        <div class="form-group">
+
+            <a class="btn btn-outline-secondary" style= "padding:5px;" asp-controller="Achizitii" 
+                asp-action="DetaliiComanda" asp-route-id="@Model.comanda!.Id"> Inapoi </a>
+
+                @if (Model.Id > 0)
+                {
+
+                    <input type="submit" class="btn btn-outline-success float-end" style= "padding:5px;" value="Actualizeaza"
+                        asp-controller="InfoComanda" asp-action="ActualizeazaInformatia"/>
+
+                }
+                else
+                {
+
+                    <input type="submit" class="btn btn-outline-success float-end" style= "padding:5px;" value="Adauga"
+                        asp-controller="InfoComanda" asp-action="SalvareInfoComanda"/>
+
+                }
+
+        </div>
+
+</form>
+
+@*    </div>
+
+</div>*@

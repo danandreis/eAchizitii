@@ -1,0 +1,69 @@
+﻿@using eAchizitii.Data.ViewModels
+@model ResetareParolaVM;
+
+@{
+
+    ViewData["Title"] = "Resetare parola";
+}
+
+<div class="row">
+    <div class="col-md-6 offset-3">
+        <p>
+            <h3 class="text-center">Resetare parola utilizator</h3>
+        </p>
+    </div>
+
+    <div class="row">
+
+        <div class=" col-md-6 offset-3 bg-light text-danger">
+            Parola trebuie sa contina: 
+            <ul style="margin-left:25px;">
+                <li>Minim 6 caractere</li>
+                <li>Cel putin o litera mare</li>
+                <li>Cel putin o litera mica</li>
+                <li>Cel putin o cifra</li>
+            </ul>
+        </div>
+        <div class="col-md-4 offset-4">
+            <form asp-action="ResetareParola">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group" style="padding:5px;">
+                    <input type="hidden" asp-for="Id" class="form-control" />
+                </div>
+
+                <div class="form-group" style="padding:5px;">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" style="padding:5px;">
+                    <label asp-for="ConfirmPassword" class="control-label"></label>
+                    <input asp-for="ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" style="padding:5px;">
+                    <input class="btn btn-outline-success float-end text-center" 
+                        type="submit" value="Actualizeaza" />
+                        @if(User.IsInRole("Admin"))
+                        {
+
+                            <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="ListaUtilizatori">Inapoi</a>
+
+                        }
+                        else
+                        {
+
+                            <a class="btn btn-outline-secondary" asp-controller="Comenzi" asp-action="Index">Inapoi</a>
+
+                        }
+                    
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>

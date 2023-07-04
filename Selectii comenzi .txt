@@ -1,0 +1,52 @@
+// INterogari vezhi selectii comenzi
+
+ public async Task<List<Comanda>> GetAllAsync(int idSucursala)
+ {
+	
+	
+	var comenzi = await _context.Comenzi.Include(c => c.adresaLivrare).Include(c => c.sucursala).
+                            Include(c => c.statusComanda).Include(c => c.angajati_comenzi)!.ThenInclude(u => u.angajat).
+                            Include(c => c.angajati_comenzi)!.ThenInclude(rc => rc.rolComanda).
+                            Where(c => c.SucursalaId == idSucursala).ToListAsync();
+
+	return comenzi;
+}
+
+public async Task<List<Comanda>> GetOrdersByAquisitorAsync(string idResposabilAchizitii)
+{
+
+	var comenzi = await _context.Comenzi.Include(c => c.adresaLivrare).Include(c => c.sucursala).
+						Include(c => c.statusComanda).Include(c => c.angajati_comenzi)!.ThenInclude(u => u.angajat).
+                        Include(c => c.angajati_comenzi)!.ThenInclude(rc => rc.rolComanda).
+                        Where(c => c.angajati_comenzi!.Any(a => a.angajatId!.Equals(idResposabilAchizitii))).ToListAsync()*/;
+
+	return comenzi;
+
+}
+
+        //Comenzile aprobate si nealocate
+public async Task<List<Comanda>> GetAllUnallocatedOrdersAsync()
+{
+
+	var statusComanda = await _context.StatusuriComanda.FirstAsync(s => s.Status == ApplicationConstantValues.Aprobata);
+
+	var comenzi = await _context.Comenzi.Include(c => c.adresaLivrare).Include(c => c.sucursala).
+						Include(c => c.statusComanda).Include(c => c.angajati_comenzi)!.ThenInclude(u => u.angajat).
+						Include(c => c.angajati_comenzi)!.ThenInclude(rc => rc.rolComanda).
+                        Where(c => c.StatusComandaId == statusComanda.Id).ToListAsync();
+
+	return comenzi;
+}
+
+public async Task<List<Comanda>> GetAllUnapprovedOrdersAsync()
+{
+
+	var statusComanda = await _context.StatusuriComanda.FirstAsync(s => s.Status == ApplicationConstantValues.Trimisa);
+			
+	var comenzi = await _context.Comenzi.Include(c => c.adresaLivrare).Include(c => c.sucursala).
+						Include(c => c.statusComanda).Include(c => c.angajati_comenzi)!.ThenInclude(u => u.angajat).
+                        Include(c => c.angajati_comenzi)!.ThenInclude(rc => rc.rolComanda).
+                        OrderBy(c => c.DataComanda).Where(c => c.StatusComandaId == statusComanda.Id).ToListAsync();*/
+	return comenzi;
+}
+		
