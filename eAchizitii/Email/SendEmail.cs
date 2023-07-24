@@ -32,7 +32,7 @@ namespace eAchizitii.Email
             SmtpClient smtp = new SmtpClient("mail.HostDan.ro", 25)
             {
 
-                Credentials = new NetworkCredential("hostdanr", "Andrei_1178"),
+                Credentials = new NetworkCredential("*****", "*****"),
                 EnableSsl = true
 
             };
